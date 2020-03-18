@@ -2,3 +2,6 @@
 [submodule "blt"]
 	path = cmake/blt
 	url = https://github.com/llnl/blt
+[submodule "src/thirdPartyLibs/spack"]
+	path = src/thirdPartyLibs/spack
+	url = https://github.com/spack/spack
