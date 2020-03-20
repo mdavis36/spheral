@@ -32,8 +32,15 @@ include(${PROJECT_SOURCE_DIR}/../cmake/blt/SetupBLT.cmake)
 ################################
 set(SPHERAL_INSTALL_DIR)
 option(INSTALL_TPLS "download and install third party libs" ON)
-include(../cmake/InstallLibraries.cmake)
-set(spheral_depends BOOST Eigen qhull silo polytope pybind11)
+include(../cmake/SpackInstallLibraries.cmake)
+# set(spheral_tpl_depends python eigen)
+# set(tmp )
+# foreach (x ${spheral_depends})
+#   list(APPEND tmp .${x}.date)
+# endforeach(x)
+# set(spheral_tpl_depends ${tmp})
+set(spheral_depends )
+#set(spheral_depends BOOST Eigen qhull silo polytope pybind11)
 
 
 ################################

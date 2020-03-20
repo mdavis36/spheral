@@ -1,4 +1,5 @@
 function(spheral_add_cxx_library package_name)
+  #add_tpl_depends(${${package_name}_sources})
   if(ENABLE_STATIC_CXXONLY)
     blt_add_library(NAME        Spheral_${package_name}
                     HEADERS     ${${package_name}_headers}
