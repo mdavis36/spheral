@@ -29,7 +29,7 @@ set(SPACK ${SPHERAL_TPL_DIR}/spack/bin/spack -k)
 #-------------------------------------------------------------------------------
 # Prepare spack in the TPL installation directory
 #-------------------------------------------------------------------------------
-if (INSTALL_TPLS)
+if (INSTALL_TPLS AND NOT EXISTS ${SPHERAL_TPL_DIR}/spack)
   message("\n---------- BUILDING SPACK ----------")
   file(COPY ${TPL_SRC_DIR}/spack DESTINATION ${SPHERAL_TPL_DIR})
 
@@ -51,8 +51,22 @@ endif()
 #-------------------------------------------------------------------------------
 function(SpackTarget TARGET PKGNAME)
   message("\n---------- BUILDING ${TARGET} ----------")
-  message("Running ${SPACK} install ${PKGNAME}")
-  execute_process(COMMAND ${SPACK} install ${PKGNAME})
+  message("Running ${SPACK} install ${PKGNAME} ${ARGN}")
+  execute_process(COMMAND ${SPACK} install ${PKGNAME} ${ARGN})
+  execute_process(
+    COMMAND ${SPACK} location -i ${PKGNAME}
+    OUTPUT_VARIABLE ${SpackTarget}_base
+    )
+  set_property(GLOBAL PROPERTY ${SpackTarget}_base "${SpackTarget}_base")
+  if (EXISTS ${SpackTarget}_base/include)
+    set_property(GLOBAL PROPERTY ${SpackTarget}_include "${SpackTarget}_base/include")
+  endif()
+  if (EXISTS ${SpackTarget}_base/lib)
+    set_property(GLOBAL PROPERTY ${SpackTarget}_lib "${SpackTarget}_base/lib")
+  endif()
+  if (EXISTS ${SpackTarget}_base/bin)
+    set_property(GLOBAL PROPERTY ${SpackTarget}_bin "${SpackTarget}_base/bin")
+  endif()
   message("--------------------------------------\n")
 endfunction()
 
@@ -92,6 +106,9 @@ endmacro(add_tpl_depends)
 #-------------------------------------------------------------------------------
 SpackTarget(python python@2.7.16)
 SpackTarget(eigen eigen)
+#SpackTarget(scipy py-scientificpython)   # <-- Not until we go to python 3 apparently
+SpackTarget(numpy py-numpy@1.16.6)
+SpackTarget(boost boost@1.72.0 cxxstd=11)
 
 # Note we have to specify where to put the python site packages
 set(PYTHON_SITE_PACKAGE_DIR ${SPHERAL_INSTALL_DIR}/site-packages)
