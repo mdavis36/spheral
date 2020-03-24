@@ -104,11 +104,23 @@ endmacro(add_tpl_depends)
 #-------------------------------------------------------------------------------
 # Add the spack packages as targets now.
 #-------------------------------------------------------------------------------
-SpackTarget(python python@2.7.16)
-SpackTarget(eigen eigen)
-#SpackTarget(scipy py-scientificpython)   # <-- Not until we go to python 3 apparently
-SpackTarget(numpy py-numpy@1.16.6)
+# Missing: ats py-hdf5 maneos numpy-stl OpenSubDiv polytope PYB11Generator sobol
+SpackTarget(python python@3.7.6)
+SpackTarget(eigen eigen@3.3.7)
+SpackTarget(scipy py-scientificpython@3.3.7)
+SpackTarget(numpy py-numpy@1.18.1)
 SpackTarget(boost boost@1.72.0 cxxstd=11)
+SpackTarget(cython py-cython@0.29.14)
+SpackTarget(decorator py-decorator@4.4.0)
+SpackTarget(py-gnuplot py-gnuplot)
+SpackTarget(hdf5 hdf5@1.10.6)
+SpackTarget(matplotlib py-matplotlib@3.1.3)
+SpackTarget(mpi4py py-mpi4py@3.0.3)
+SpackTarget(qhull qhull@2015.2)
+SpackTarget(silo silo@4.10.2)
+SpackTarget(sphinx py-sphinx)
+SpackTarget(sphinx-rtd py-sphinx-rtd-theme)
+SpackTarget(twine py-twine)
 
 # Note we have to specify where to put the python site packages
 set(PYTHON_SITE_PACKAGE_DIR ${SPHERAL_INSTALL_DIR}/site-packages)
