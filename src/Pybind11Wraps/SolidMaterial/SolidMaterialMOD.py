@@ -24,7 +24,6 @@ from ConstantStrength import *
 from SteinbergGuinanStrength import *
 from JohnsonCookStrength import *
 from CollinsStrength import *
-from FullyDamagedCollinsStrength import *
 
 from PorousEquationOfState import *
 from PorousStrengthModel import *
@@ -48,7 +47,6 @@ PYB11includes += ['"SolidMaterial/SolidEquationOfState.hh"',
                   '"SolidMaterial/SteinbergGuinanLundStrength.hh"',
                   '"SolidMaterial/JohnsonCookStrength.hh"',
                   '"SolidMaterial/CollinsStrength.hh"',
-                  '"SolidMaterial/FullyDamagedCollinsStrength.hh"',
                   '"SolidMaterial/PorousEquationOfState.hh"',
                   '"SolidMaterial/PorousStrengthModel.hh"',
                   '"SolidMaterial/StrainPorosity.hh"',
@@ -103,7 +101,6 @@ ConstantStrength%(ndim)id = PYB11TemplateClass(ConstantStrength, template_parame
 SteinbergGuinanStrength%(ndim)id = PYB11TemplateClass(SteinbergGuinanStrength, template_parameters="%(Dimension)s")
 JohnsonCookStrength%(ndim)id = PYB11TemplateClass(JohnsonCookStrength, template_parameters="%(Dimension)s")
 CollinsStrength%(ndim)id = PYB11TemplateClass(CollinsStrength, template_parameters="%(Dimension)s")
-FullyDamagedCollinsStrength%(ndim)id = PYB11TemplateClass(FullyDamagedCollinsStrength, template_parameters="%(Dimension)s")
 
 PorousEquationOfState%(ndim)id = PYB11TemplateClass(PorousEquationOfState, template_parameters="%(Dimension)s")
 PorousStrengthModel%(ndim)id = PYB11TemplateClass(PorousStrengthModel, template_parameters="%(Dimension)s")

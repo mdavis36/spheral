@@ -9,7 +9,6 @@ set(SolidMaterial_inst
     SteinbergGuinanStrength
     JohnsonCookStrength
     CollinsStrength
-    FullyDamagedCollinsStrength
     PorousEquationOfState
     PorousStrengthModel
     StrainPorosity
@@ -20,7 +19,6 @@ set(SolidMaterial_sources )
 
 set(SolidMaterial_headers
     CollinsStrength.hh
-    FullyDamagedCollinsStrength.hh
     ConstantStrength.hh
     Geodyn.hh
     GruneisenEquationOfState.hh
