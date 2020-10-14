@@ -19,6 +19,7 @@ from SolidSPHHydroBase import *
 PYB11includes += ['"SPH/SPHHydroBase.hh"',
                   '"SPH/PSPHHydroBase.hh"',
                   '"SPH/computeSPHSumMassDensity.hh"',
+                  '"SPH/computeSPHSumMassDensity_FSI.hh"',
                   '"SPH/computeSPHOmegaGradhCorrection.hh"',
                   '"SPH/SPHHydroBaseRZ.hh"',
                   '"SPH/SPHHydroBaseGSRZ.hh"',
@@ -50,6 +51,17 @@ def computeSPHSumMassDensity(connectivityMap = "const ConnectivityMap<%(Dimensio
     return "void"
 
 @PYB11template("Dimension")
+def computeSPHSumMassDensity_FSI(connectivityMap = "const ConnectivityMap<%(Dimension)s>&",
+                             W = "const TableKernel<%(Dimension)s>&",
+                             sumOverAllNodeLists = "const bool",
+                             position = "const FieldList<%(Dimension)s, typename %(Dimension)s::Vector>&",
+                             mass = "const FieldList<%(Dimension)s, typename %(Dimension)s::Scalar>&",
+                             H = "const FieldList<%(Dimension)s, typename %(Dimension)s::SymTensor>&",
+                             massDensity = "FieldList<%(Dimension)s, typename %(Dimension)s::Scalar>&"):
+    "Compute the SPH mass density summation."
+    return "void"
+
+@PYB11template("Dimension")
 def computeSPHOmegaGradhCorrection(connectivityMap = "const ConnectivityMap<%(Dimension)s>&",
                                    W = "const TableKernel<%(Dimension)s>&",
                                    position = "const FieldList<%(Dimension)s, typename %(Dimension)s::Vector>&",
@@ -67,6 +79,7 @@ SPHHydroBase%(ndim)id = PYB11TemplateClass(SPHHydroBase, template_parameters="%(
 PSPHHydroBase%(ndim)id = PYB11TemplateClass(PSPHHydroBase, template_parameters="%(Dimension)s")
 SolidSPHHydroBase%(ndim)id = PYB11TemplateClass(SolidSPHHydroBase, template_parameters="%(Dimension)s")
 
+computeSPHSumMassDensity_FSI%(ndim)id = PYB11TemplateFunction(computeSPHSumMassDensity_FSI, template_parameters="%(Dimension)s")
 computeSPHSumMassDensity%(ndim)id = PYB11TemplateFunction(computeSPHSumMassDensity, template_parameters="%(Dimension)s")
 computeSPHOmegaGradhCorrection%(ndim)id = PYB11TemplateFunction(computeSPHOmegaGradhCorrection, template_parameters="%(Dimension)s")
 ''' % {"ndim"      : ndim,

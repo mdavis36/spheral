@@ -86,6 +86,18 @@ self.generateSolidSPHHydroBaseBindings(self.SolidSPHHydroBase%(dim)id, %(dim)i)
         symtensorfieldlist = "Spheral::SymTensorFieldList%id" % ndim
         connectivitymap = "Spheral::ConnectivityMap%id" % ndim
         tablekernel = "Spheral::TableKernel%id" % ndim
+        
+        # SPH_FSI sum density.
+        self.space.add_function("computeSPHSumMassDensity_FSI", None,
+                                [constrefparam(connectivitymap, "connectivityMap"),
+                                 constrefparam(tablekernel, "W"),
+                                 param("bool", "sumMassDensityOverAllNodeLists"),
+                                 constrefparam(vectorfieldlist, "position"),
+                                 constrefparam(scalarfieldlist, "mass"),
+                                 constrefparam(symtensorfieldlist, "H"),
+                                 refparam(scalarfieldlist, "massDensity")],
+                                template_parameters = [dim],
+                                custom_name = "computeSPHSumMassDensity_FSI%id" % ndim)
 
         # SPH sum density.
         self.space.add_function("computeSPHSumMassDensity", None,

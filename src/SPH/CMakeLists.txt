@@ -5,6 +5,7 @@ set(SPH_inst
     SolidSPHHydroBase
     computeSPHOmegaGradhCorrection
     computeSPHSumMassDensity
+    computeSPHSumMassDensity_FSI
     correctSPHSumMassDensity
     computePSPHCorrections
     computeSumVoronoiCellMassDensity
@@ -42,6 +43,7 @@ set(SPH_headers
     computeHydrostaticEquilibriumPressure.hh
     computeSPHOmegaGradhCorrection.hh
     computeSPHSumMassDensity.hh
+    computeSPHSumMassDensity_FSI.hh
     computeSumVoronoiCellMassDensity.hh
     correctSPHSumMassDensity.hh
     )

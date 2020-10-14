@@ -29,6 +29,7 @@ PYB11namespaces = ["Spheral"]
 #-------------------------------------------------------------------------------
 MassDensityType = PYB11enum(("SumDensity", 
                              "RigorousSumDensity",
+                             "FSISumDensity",
                              "HybridSumDensity",
                              "IntegrateDensity",
                              "VoronoiCellDensity",

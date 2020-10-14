@@ -23,6 +23,7 @@ enum class MassDensityType {
   VoronoiCellDensity = 4,
   SumVoronoiCellDensity = 5,
   CorrectedSumDensity = 6,
+  FSISumDensity = 7,
 };
 
 enum class HEvolutionType {

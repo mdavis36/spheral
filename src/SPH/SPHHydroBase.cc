@@ -5,6 +5,7 @@
 //----------------------------------------------------------------------------//
 #include "FileIO/FileIO.hh"
 #include "computeSPHSumMassDensity.hh"
+#include "computeSPHSumMassDensity_FSI.hh"
 #include "correctSPHSumMassDensity.hh"
 #include "computeSumVoronoiCellMassDensity.hh"
 #include "computeSPHOmegaGradhCorrection.hh"
@@ -474,7 +475,19 @@ preStepInitialize(const DataBase<Dimension>& dataBase,
       }
     }
     break;
-
+  case MassDensityType::FSISumDensity:
+    {
+      const auto& connectivityMap = dataBase.connectivityMap();
+      const auto  position = state.fields(HydroFieldNames::position, Vector::zero);
+      const auto  mass = state.fields(HydroFieldNames::mass, 0.0);
+      const auto  H = state.fields(HydroFieldNames::H, SymTensor::zero);
+      auto        massDensity = state.fields(HydroFieldNames::massDensity, 0.0);
+      computeSPHSumMassDensity_FSI(connectivityMap, this->kernel(), mSumMassDensityOverAllNodeLists, position, mass, H, massDensity);
+      for (auto boundaryItr = this->boundaryBegin(); boundaryItr < this->boundaryEnd(); ++boundaryItr) (*boundaryItr)->applyFieldListGhostBoundary(massDensity);
+      for (auto boundaryItr = this->boundaryBegin(); boundaryItr < this->boundaryEnd(); ++boundaryItr) (*boundaryItr)->finalizeGhostBoundary();
+    }
+    break;
+    
   case MassDensityType::SumDensity:
     {
       auto       massDensity = state.fields(HydroFieldNames::massDensity, 0.0);
