@@ -19,6 +19,8 @@ namespace Spheral {
                            const FieldList<Dimension, typename Dimension::Vector>& position,
                            const FieldList<Dimension, typename Dimension::Scalar>& mass,
                            const FieldList<Dimension, typename Dimension::SymTensor>& H,
+                           const FieldList<Dimension, typename Dimension::Scalar>& pressure,
+                           const FieldList<Dimension, typename Dimension::Scalar>& soundSpeed,
                            FieldList<Dimension, typename Dimension::Scalar>& massDensity);
 
 }

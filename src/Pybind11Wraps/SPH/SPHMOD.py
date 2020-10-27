@@ -57,6 +57,8 @@ def computeSPHSumMassDensity_FSI(connectivityMap = "const ConnectivityMap<%(Dime
                              position = "const FieldList<%(Dimension)s, typename %(Dimension)s::Vector>&",
                              mass = "const FieldList<%(Dimension)s, typename %(Dimension)s::Scalar>&",
                              H = "const FieldList<%(Dimension)s, typename %(Dimension)s::SymTensor>&",
+                             pressure = "const FieldList<%(Dimension)s, typename %(Dimension)s::Scalar>&",
+                             soundSpeed = "const FieldList<%(Dimension)s, typename %(Dimension)s::Scalar>&",
                              massDensity = "FieldList<%(Dimension)s, typename %(Dimension)s::Scalar>&"):
     "Compute the SPH mass density summation."
     return "void"

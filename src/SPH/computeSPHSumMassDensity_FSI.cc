@@ -23,6 +23,8 @@ computeSPHSumMassDensity_FSI(const ConnectivityMap<Dimension>& connectivityMap,
                          const FieldList<Dimension, typename Dimension::Vector>& position,
                          const FieldList<Dimension, typename Dimension::Scalar>& mass,
                          const FieldList<Dimension, typename Dimension::SymTensor>& H,
+                         const FieldList<Dimension, typename Dimension::Scalar>& pressure,
+                         const FieldList<Dimension, typename Dimension::Scalar>& soundSpeed,
                          FieldList<Dimension, typename Dimension::Scalar>& massDensity) {
 
   // Pre-conditions.
@@ -39,14 +41,20 @@ computeSPHSumMassDensity_FSI(const ConnectivityMap<Dimension>& connectivityMap,
   const auto& pairs = connectivityMap.nodePairList();
   const auto  npairs = pairs.size();
 
-  // First the self contribution.
+  // Prepare the kernel sum correction field.
+  typedef typename Dimension::Scalar Scalar; //10/14/2020
+  FieldList<Dimension, Scalar> oldMassDensity(FieldStorageType::CopyFields);  //10/14/2020
+
   for (auto nodeListi = 0u; nodeListi < numNodeLists; ++nodeListi) {
+    oldMassDensity.appendNewField("oldMassDensity", massDensity[nodeListi]->nodeList(), 0.0);
     const auto n = massDensity[nodeListi]->numInternalElements();
 #pragma omp parallel for
     for (auto i = 0u; i < n; ++i) {
       const auto  mi = mass(nodeListi, i);
+      const auto  rhoi = massDensity(nodeListi, i);
       const auto& Hi = H(nodeListi, i);
       const auto  Hdeti = Hi.Determinant();
+      oldMassDensity(nodeListi, i) = rhoi;
       massDensity(nodeListi, i) = mi*Hdeti*W0;
     }
   }
@@ -67,12 +75,18 @@ computeSPHSumMassDensity_FSI(const ConnectivityMap<Dimension>& connectivityMap,
       // State for node i
       const auto& ri = position(nodeListi, i);
       const auto  mi = mass(nodeListi, i);
+      const auto  ci = soundSpeed(nodeListi, i);
+      const auto  Pi = pressure(nodeListi, i);
+      const auto  rhoi = oldMassDensity(nodeListi, i);
       const auto& Hi = H(nodeListi, i);
       const auto  Hdeti = Hi.Determinant();
 
       // State for node j
       const auto& rj = position(nodeListj, j);
       const auto  mj = mass(nodeListj, j);
+      const auto  cj = soundSpeed(nodeListj, j);
+      const auto  Pj = pressure(nodeListj, j);
+      const auto  rhoj = oldMassDensity(nodeListj, j);
       const auto& Hj = H(nodeListj, j);
       const auto  Hdetj = Hj.Determinant();
 
@@ -84,8 +98,8 @@ computeSPHSumMassDensity_FSI(const ConnectivityMap<Dimension>& connectivityMap,
       const auto Wj = W.kernelValue(etaj, Hdetj);
 
       // Sum the pair-wise contributions.
-      massDensity_thread(nodeListi, i) += (nodeListi == nodeListj ? mj : mi)*Wj;
-      massDensity_thread(nodeListj, j) += (nodeListi == nodeListj ? mi : mj)*Wi;
+      massDensity_thread(nodeListi, i) += (nodeListi == nodeListj ? mj : mj/rhoj*(rhoi+(Pj-Pi)/(ci*ci)))*Wj;
+      massDensity_thread(nodeListj, j) += (nodeListi == nodeListj ? mi : mi/rhoi*(rhoj+(Pi-Pj)/(cj*cj)))*Wi;
     }
 
 #pragma omp critical
@@ -93,6 +107,7 @@ computeSPHSumMassDensity_FSI(const ConnectivityMap<Dimension>& connectivityMap,
       massDensity_thread.threadReduce();
     }
   }
+
 }
 
 }

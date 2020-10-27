@@ -327,8 +327,8 @@ evaluateDerivatives(const typename Dimension::Scalar /*time*/,
       // Acceleration.
       CHECK(rhoi > 0.0);
       CHECK(rhoj > 0.0);
-      const auto sigmarhoi = safeOmegai*sigmai/(rhoi*rhoi);
-      const auto sigmarhoj = safeOmegaj*sigmaj/(rhoj*rhoj);
+      const auto sigmarhoi = safeOmegai*sigmai/(rhoi*rhoj);
+      const auto sigmarhoj = safeOmegaj*sigmaj/(rhoi*rhoj);
       const auto deltaDvDt = sigmarhoi*gradWi + sigmarhoj*gradWj - Qacci - Qaccj;
       if (freeParticle) {
         DvDti += mj*deltaDvDt;

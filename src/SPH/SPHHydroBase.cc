@@ -481,10 +481,15 @@ preStepInitialize(const DataBase<Dimension>& dataBase,
       const auto  position = state.fields(HydroFieldNames::position, Vector::zero);
       const auto  mass = state.fields(HydroFieldNames::mass, 0.0);
       const auto  H = state.fields(HydroFieldNames::H, SymTensor::zero);
+      const auto  pressure = state.fields(HydroFieldNames::pressure, 0.0);
+      const auto  soundSpeed = state.fields(HydroFieldNames::soundSpeed, 0.0);
       auto        massDensity = state.fields(HydroFieldNames::massDensity, 0.0);
-      computeSPHSumMassDensity_FSI(connectivityMap, this->kernel(), mSumMassDensityOverAllNodeLists, position, mass, H, massDensity);
+      computeSPHSumMassDensity_FSI(connectivityMap, this->kernel(), mSumMassDensityOverAllNodeLists, position, mass, H, pressure, soundSpeed, massDensity);
       for (auto boundaryItr = this->boundaryBegin(); boundaryItr < this->boundaryEnd(); ++boundaryItr) (*boundaryItr)->applyFieldListGhostBoundary(massDensity);
       for (auto boundaryItr = this->boundaryBegin(); boundaryItr < this->boundaryEnd(); ++boundaryItr) (*boundaryItr)->finalizeGhostBoundary();
+      // correctSPHSumMassDensity(connectivityMap, this->kernel(), mSumMassDensityOverAllNodeLists, position, mass, H, massDensity);
+      // for (auto boundaryItr = this->boundaryBegin(); boundaryItr < this->boundaryEnd(); ++boundaryItr) (*boundaryItr)->applyFieldListGhostBoundary(massDensity);
+      // for (auto boundaryItr = this->boundaryBegin(); boundaryItr < this->boundaryEnd(); ++boundaryItr) (*boundaryItr)->finalizeGhostBoundary();
     }
     break;
     

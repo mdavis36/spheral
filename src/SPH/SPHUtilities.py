@@ -23,7 +23,9 @@ def sumSPHMassDensity_FSIImpl(dataBase, W, method):
     pos = dataBase.fluidPosition()
     mass = dataBase.fluidMass()
     H = dataBase.fluidHfield()
-    method(cm, W, pos, mass, H, rho)
+    P = dataBase.fluidPressure()
+    c = dataBase.fluidSoundSpeed()
+    method(cm, W, pos, mass, H, P, c, rho)
     return
 
 for dim in dims:
