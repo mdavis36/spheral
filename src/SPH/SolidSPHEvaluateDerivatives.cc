@@ -389,7 +389,11 @@ evaluateDerivatives(const typename Dimension::Scalar /*time*/,
 
 
   // Finish up the derivatives for each point.
-  for (auto nodeListi = 0u; nodeListi < numNodeLists; ++nodeListi) {
+
+  RAJA::TypedRangeSegment<unsigned int> array_range(0, numNodeLists);
+  //for (auto nodeListi = 0u; nodeListi < numNodeLists; ++nodeListi) {
+  RAJA::forall<RAJA::seq_exec>(array_range, [&](int nodeListi) {
+
     const auto& nodeList = mass[nodeListi]->nodeList();
     const auto  hmin = nodeList.hmin();
     const auto  hmax = nodeList.hmax();
@@ -406,7 +410,7 @@ evaluateDerivatives(const typename Dimension::Scalar /*time*/,
     }
 
     const auto ni = nodeList.numInternalNodes();
-#pragma omp parallel for
+//#pragma omp parallel for
     for (auto i = 0u; i < ni; ++i) {
 
       // Get the state for node i.
@@ -529,7 +533,7 @@ evaluateDerivatives(const typename Dimension::Scalar /*time*/,
       // In the presence of damage, add a term to reduce the stress on this point.
       DSDti = (1.0 - Di)*DSDti - 0.25/dt*Di*Si;
     }
-  }
+  });
 }
 
 }
