@@ -25,6 +25,7 @@ set(opensubdiv_BUILD ON CACHE BOOL "Option to build Opensubdiv")
 set(aneos_BUILD ON CACHE BOOL "Option to build ANEOS third party lib")
 set(conduit_BUILD ON CACHE BOOL "Option to build Conduit")
 set(axom_BUILD ON CACHE BOOL "Option to build Axom")
+set(raja_BUILD ON CACHE BOOL "Option to build RAJA")
 
 set(pybind11_BUILD ON CACHE BOOL "Option to build pybind11")
 set(python_BUILD ON CACHE BOOL "Option to build python")
@@ -40,6 +41,7 @@ Spheral_Handle_TPL(silo spheral_depends)
 Spheral_Handle_TPL(conduit spheral_depends)
 Spheral_Handle_TPL(axom spheral_depends)
 Spheral_Handle_TPL(opensubdiv spheral_depends)
+Spheral_Handle_TPL(raja spheral_depends)
 
 # ANEOS only needed if we're supporting it
 if (ENABLE_ANEOS)
