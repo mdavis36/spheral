@@ -10,6 +10,7 @@
 #include <string>
 
 #include "SPH/SPHHydroBase.hh"
+#include "RAJA/RAJA.hpp"
 
 namespace Spheral {
 
